@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html role="heading" lang="en">
       <link
         rel="icon"
         href="https://jubelio.com/wp-content/uploads/2023/05/cropped-jubelio-favicon-32x32.png"
