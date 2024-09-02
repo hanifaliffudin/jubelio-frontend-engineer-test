@@ -35,7 +35,8 @@ Features:
    ```sh
    npm run dev
    ```
-4. Run test
+4. Open in web browser
+5. If want to test unit testing, run
    ```sh
    npm test
    ```
