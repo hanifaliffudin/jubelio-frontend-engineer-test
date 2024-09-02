@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { deleteProduct, fetchProducts } from "@/app/api/products";
 import {
   ColumnDef,
@@ -32,11 +32,15 @@ import { useCartStore } from "@/store/cartStore";
 import { toast } from "@/hooks/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import { useAuthStore } from "@/store/authStore";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Input } from "@/components/ui/input";
 
 const ListProducts = () => {
   const router = useRouter();
   const pageSize = 30;
+  const [pageIndex, setPageIndex] = useState(0);
+  const searchParams = useSearchParams();
+  const searchKeyword = searchParams.get("search") || "";
 
   // ref container table for infinite scroll
   const tableContainerRef = useRef<HTMLDivElement>(null);
@@ -115,6 +119,7 @@ const ListProducts = () => {
     useInfiniteQuery<ProductApiResponse>({
       queryKey: ["products"],
       queryFn: async ({ pageParam }) => {
+        setPageIndex(Number(pageParam));
         const fetchedData = await fetchProducts(pageSize, Number(pageParam));
         return fetchedData;
       },
@@ -126,7 +131,15 @@ const ListProducts = () => {
 
   // flatten the array of arrays from the useInfiniteQuery hook
   const flatData = useMemo(
-    () => data?.pages?.flatMap((page) => page.products) ?? [],
+    () =>
+      data?.pages
+        ?.flatMap((page) => page.products)
+        .filter(
+          (data) =>
+            JSON.stringify(data)
+              .toLowerCase()
+              .indexOf(searchKeyword?.toLowerCase()) !== -1,
+        ) ?? [],
     [data],
   );
 
@@ -145,7 +158,8 @@ const ListProducts = () => {
         if (
           scrollHeight - scrollTop - clientHeight < 100 &&
           !isFetching &&
-          totalFetched < totalDBRowCount
+          totalFetched < totalDBRowCount &&
+          totalDBRowCount > pageSize * pageIndex
         ) {
           fetchNextPage();
         }
@@ -224,6 +238,9 @@ const ListProducts = () => {
           <Button>Add</Button>
         </Link>
       </div>
+      <form>
+        <Input placeholder={searchKeyword} name="search" />
+      </form>
       <Table>
         <TableHeader>
           {tableProducts.getHeaderGroups().map((headerGroup) => (
