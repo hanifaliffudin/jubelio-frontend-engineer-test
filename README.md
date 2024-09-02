@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Jubelio Frontend Engineer Test
 
-## Getting Started
+## About The Project
 
-First, run the development server:
+This project demonstrates various frontend development skills required for a Jubelio Frontend Engineer role. It implements a product management system with authentication, CRUD operations for products, a shopping cart system, and a basic dashboard.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Features:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Auth:
+  - Login
+  - Logout
+- Products:
+  - Table List Product
+  - Search Product
+  - Add Product
+  - View Detail Product
+  - Add to Cart
+  - Edit Product
+  - Delete Product
+- Carts:
+  - Table List Cart
+  - View Detail in Modal
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Installation
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. Clone the repo
+   ```sh
+   git clone https://github.com/hanifaliffudin/jubelio-frontend-engineer-test.git
+   ```
+2. Install NPM packages
+   ```sh
+   npm install
+   ```
+3. Run dev
+   ```sh
+   npm run dev
+   ```
+4. Run test
+   ```sh
+   npm test
+   ```
 
-## Learn More
+### Assumptions or Decisions
 
-To learn more about Next.js, take a look at the following resources:
+- Auth
+  - Login using user from https://dummyjson.com/users
+  - Every page changed, fetch auth me first to check token expired
+  - To try expired, in the login payload the expiresInMins is changed to 1
+- Products
+  - Product list table, pagination using infinite scroll
+  - Get detail using ssr, so no action
+  - Create, edit, and delete only fetch, does not affect what is in the table or db
+  - Search with static function, filter array
+- Carts
+  - List cart in table pure from api, which is added to local storage is separated in my cart
+  - Table list cart, pagination using button
+  - Modal detail cart does not fetch, only uses find array list cart
+  - Search difficult to implement :(
+- Unit Testing
+  - Only check element html in layout
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Built With
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- ![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
+- ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+- ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+- ![React Query](https://img.shields.io/badge/-React%20Query-FF4154?style=for-the-badge&logo=react%20query&logoColor=white)
+- ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+- ![Jest](https://img.shields.io/badge/-jest-%23C21325?style=for-the-badge&logo=jest&logoColor=white)
+- ![ESLint](https://img.shields.io/badge/ESLint-4B3263?style=for-the-badge&logo=eslint&logoColor=white)

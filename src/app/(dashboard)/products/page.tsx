@@ -238,7 +238,8 @@ const ListProducts = () => {
           <Button>Add</Button>
         </Link>
       </div>
-      <form>
+      <form className="flex items-center gap-3">
+        Search:
         <Input placeholder={searchKeyword} name="search" />
       </form>
       <Table>
