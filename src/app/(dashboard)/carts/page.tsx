@@ -35,7 +35,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 const Carts = () => {
   const router = useRouter();
@@ -75,52 +75,55 @@ const Carts = () => {
     }
   };
 
-  const columns = [
-    {
-      accessorKey: "id",
-      header: "ID",
-    },
-    {
-      accessorKey: "products",
-      header: "Products",
-      cell: ({
-        row,
-      }: {
-        row: { original: { products: Product[]; id: number } };
-      }) => (
-        <div className="line-clamp-4 w-fit cursor-pointer">
-          {row.original.products.map((product: Product, i: number) => (
-            <p
-              key={product.id}
-              className="text-nowrap text-blue-500 font-semibold"
-              onClick={() => openModal(row.original.id)}
-            >
-              {product.title}
-              {i === row.original.products.length - 1 ? "" : ","}
-            </p>
-          ))}
-        </div>
-      ),
-    },
-    {
-      accessorKey: "totalProducts",
-      header: "Total Products",
-    },
-    {
-      accessorKey: "totalQuantity",
-      header: "Total Quantity",
-    },
-    {
-      accessorKey: "discountedTotal",
-      header: "Discounted Total",
-      cell: (info) => "$" + info.getValue(),
-    },
-    {
-      accessorKey: "total",
-      header: "Total",
-      cell: (info) => "$" + info.getValue(),
-    },
-  ];
+  const columns = useMemo(
+    () => [
+      {
+        accessorKey: "id",
+        header: "ID",
+      },
+      {
+        accessorKey: "products",
+        header: "Products",
+        cell: ({
+          row,
+        }: {
+          row: { original: { products: Product[]; id: number } };
+        }) => (
+          <div className="line-clamp-4 w-fit cursor-pointer">
+            {row.original.products.map((product: Product, i: number) => (
+              <p
+                key={product.id}
+                className="text-nowrap text-blue-500 font-semibold"
+                onClick={() => openModal(row.original.id)}
+              >
+                {product.title}
+                {i === row.original.products.length - 1 ? "" : ","}
+              </p>
+            ))}
+          </div>
+        ),
+      },
+      {
+        accessorKey: "totalProducts",
+        header: "Total Products",
+      },
+      {
+        accessorKey: "totalQuantity",
+        header: "Total Quantity",
+      },
+      {
+        accessorKey: "discountedTotal",
+        header: "Discounted Total",
+        cell: (info) => "$" + info.getValue(),
+      },
+      {
+        accessorKey: "total",
+        header: "Total",
+        cell: (info) => "$" + info.getValue(),
+      },
+    ],
+    [],
+  );
 
   const { isLoading, error, data } = useQuery({
     queryKey: ["cart", pagination],
